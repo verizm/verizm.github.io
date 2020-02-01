@@ -6,8 +6,6 @@
   <title>Calculator</title>
   <meta name="description" content="The HTML5 Herald">
   <meta name="author" content="SitePoint">
-
-  <link rel="stylesheet" href="css/styles.css?v=1.0">
 </head>
 
 <body>
@@ -31,8 +29,49 @@
 	Last digit control number is created by:
   </text>
   <h3>Please, enter 12 number:</h3>
-  <input id="input" type="number">
+  <input id="input" type="number" maxlength="12">
+  <br/>
   <label id="result"></label>
-  <script src="js/scripts.js"></script>
+  <script type="text/javascript">
+    window.onload = function(e) {
+	  var sel = document.getElementById("input");
+      sel.addEventListener("input", function (e) {
+		console.log("CHANGE:", e.target.value);
+		var str = String(e.target.value);
+		if (str.length == 12)
+		{
+		    var split_number = function(number) {
+				var array = [];
+				while (number > 0)
+				{
+				    array.push(number % 10);
+                    number = parseInt(number / 10);
+				}
+			    return array.reverse();
+			};
+			var origin_number = e.target.value;
+		    var control_number = 279146358279;
+
+			var array_origin_number = split_number(origin_number);
+			var array_control_number = split_number(control_number);
+
+			var result = 0;
+			for (var i = 0; i < 12; i++)
+			{
+				result = result + array_origin_number[i] * array_control_number[i]
+			}
+
+			result = result % 11;
+			if (result == 10)
+			{
+				result = 1;
+			}
+
+		    var show = document.getElementById("result");
+            show.innerHTML = String(result);
+		}
+      });
+    }
+  </script>
 </body>
 </html>
